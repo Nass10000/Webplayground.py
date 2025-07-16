@@ -3,21 +3,25 @@
 {% block title %}Páginas{% endblock %}
 
 {% block content %}
-<div class="container">
+{% include 'pages/includes/pages_menu.html' %}
+<div class="container" style="margin-top: 30px;">
     <div class="row">
-        <div class="col">
+        <div class="col-md-9 mx-auto">
             <h2>Páginas</h2>
             {% if page_list %}
-                <ul class="list-group">
-                    {% for page in page_list %}
-                        <li class="list-group-item">
-                            <a href="{% url 'page' page.pk %}" class="text-decoration-none">
-                                <h5>{{ page.title }}</h5>
-                            </a>
-                            <small class="text-muted">Creado: {{ page.created|date:"d/m/Y" }}</small>
-                        </li>
-                    {% endfor %}
-                </ul>
+                {% for page in page_list %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'page' page.pk %}" class="text-decoration-none text-dark">
+                                    {{ page.title }}
+                                </a>
+                            </h5>
+                            <p class="card-text">{{ page.content|truncatewords:30 }}</p>
+                            <small class="text-muted">{{ page.created|date:"d M Y" }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
             {% else %}
                 <div class="alert alert-info">
                     <p>No hay páginas disponibles.</p>
