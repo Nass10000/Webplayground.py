@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Páginas - Web Playground</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .page-list {
+            display: grid;
+            gap: 20px;
+        }
+        .page-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .page-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .page-title {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+        .page-title:hover {
+            color: #3498db;
+        }
+        .page-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .page-content {
+            color: #555;
+            line-height: 1.6;
+        }
+        .no-pages {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">Playground</div>
+        <ul class="navbar-nav">
+            <li><a href="/" class="nav-link">Inicio</a></li>
+            <li><a href="/pages/" class="nav-link">Páginas</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <h1>Páginas</h1>
+        
+        {% if page_list %}
+            <div class="page-list">
+                {% for page in page_list %}
+                    <div class="page-item">
+                        <a href="{% url 'pages:page' page.pk %}" class="page-title">{{ page.title }}</a>
+                        <div class="page-meta">
+                            Creado: {{ page.created|date:"d/m/Y H:i" }} | 
+                            Actualizado: {{ page.updated|date:"d/m/Y H:i" }}
+                        </div>
+                        <div class="page-content">
+                            {{ page.content|truncatewords:30 }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-pages">
+                <p>No hay páginas disponibles.</p>
+                <p>Puedes crear nuevas páginas desde el <a href="/admin/">panel de administración</a>.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
