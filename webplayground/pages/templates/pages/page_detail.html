@@ -1,112 +1,27 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} - Web Playground</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        .navbar {
-            background-color: #2c3e50;
-            padding: 15px 20px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar-brand {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .navbar-nav {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-        }
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        .page-header {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        .page-title {
-            color: #2c3e50;
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-        .page-meta {
-            color: #666;
-            font-size: 14px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-        .page-content {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            line-height: 1.8;
-            color: #333;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="navbar-brand">Playground</div>
-        <ul class="navbar-nav">
-            <li><a href="/" class="nav-link">Inicio</a></li>
-            <li><a href="/pages/" class="nav-link">Páginas</a></li>
-        </ul>
-    </nav>
-    
-    <div class="container">
-        <a href="{% url 'pages:pages' %}" class="back-link">← Volver a páginas</a>
-        
-        <div class="page-header">
-            <h1 class="page-title">{{ page.title }}</h1>
-            <div class="page-meta">
-                Creado: {{ page.created|date:"d/m/Y H:i" }} | 
-                Actualizado: {{ page.updated|date:"d/m/Y H:i" }}
+{% extends 'core/base.html' %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>{{ page.title }}</h2>
+            <div class="card">
+                <div class="card-body">
+                    {{ page.content|linebreaks }}
+                </div>
+                <div class="card-footer text-muted">
+                    <small>
+                        Creado: {{ page.created|date:"d/m/Y H:i" }} | 
+                        Actualizado: {{ page.updated|date:"d/m/Y H:i" }}
+                    </small>
+                </div>
+            </div>
+            <div class="mt-3">
+                <a href="{% url 'pages' %}" class="btn btn-secondary">Volver a páginas</a>
             </div>
         </div>
-        
-        <div class="page-content">
-            {{ page.content|linebreaks }}
-        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
