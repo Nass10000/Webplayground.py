@@ -19,6 +19,12 @@
                             </h5>
                             <p class="card-text">{{ page.content|truncatewords:30 }}</p>
                             <small class="text-muted">{{ page.created|date:"d M Y" }}</small>
+                            {% if request.user.is_staff %}
+                                <div class="mt-2">
+                                    <a href="{% url 'pages_update' page.pk %}" class="btn btn-sm btn-primary">Editar</a>
+                                    <a href="{% url 'pages_delete' page.pk %}" class="btn btn-sm btn-danger">Borrar</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

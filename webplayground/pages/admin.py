@@ -8,5 +8,10 @@ class PageAdmin(admin.ModelAdmin):
     search_fields = ('title', 'content')
     list_editable = ('order',)
     readonly_fields = ('created', 'updated')
+    
+    class Media:
+        css = {
+            'all': ('pages/css/custom_ckeditor.css',)
+        }
 
 admin.site.register(Page, PageAdmin)

@@ -11,4 +11,10 @@
         </div>
     </div>
 </nav>
+
+<!-- Cargar CKEditor -->
+{% load static %}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ form.media }}
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/custom_ckeditor.css' %}">
 {% endif %}

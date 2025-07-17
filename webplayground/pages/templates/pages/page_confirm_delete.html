@@ -1,29 +1,20 @@
 {% extends 'core/base.html' %}
-{% load static %}
 
-{% block title %}Crear página{% endblock %}
+{% block title %}Borrar página{% endblock %}
 
 {% block content %}
 {% include 'pages/includes/pages_menu.html' %}
 <div class="container" style="margin-top: 30px;">
     <div class="row">
         <div class="col-md-9 mx-auto">
-            <h2>Crear página</h2>
+            <h2>Borrar página</h2>
             <div class="card">
                 <div class="card-body">
+                    <p>¿Estás seguro de que quieres borrar la página "<strong>{{ object.title }}</strong>"?</p>
                     <form method="post">
                         {% csrf_token %}
-                        <div class="mb-3">
-                            {{ form.title }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.content }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.order }}
-                        </div>
                         <div class="d-grid gap-2">
-                            <input type="submit" class="btn btn-primary btn-block" value="Crear página">
+                            <input type="submit" class="btn btn-danger btn-block" value="Sí, borrar página">
                             <a href="{% url 'pages' %}" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </form>
@@ -34,9 +25,6 @@
 </div>
 
 <style>
-    .form-control {
-        margin-bottom: 15px;
-    }
     .btn-block {
         padding: 10px;
         font-size: 16px;

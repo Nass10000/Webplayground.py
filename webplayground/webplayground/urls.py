@@ -24,6 +24,8 @@ urlpatterns = [
     path('sample/', SamplePageView.as_view(), name='sample'),
     # Paths de pages
     path('pages/', include('pages.urls')),
+    # Paths de autenticación
+    path('accounts/', include('django.contrib.auth.urls')),
     # Paths del admin
     path('admin/', admin.site.urls),
 ]
