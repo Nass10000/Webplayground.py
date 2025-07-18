@@ -114,18 +114,23 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Django specific
+# Django specific - DATOS SENSIBLES
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media/
 staticfiles/
+sent_emails/
 
 # Secret keys and sensitive data
 secret_key.txt
 .env
 *.key
+*.pem
+*.crt
+*.p12
+*.pfx
 
 # IDE files
 .vscode/
@@ -167,3 +172,15 @@ htmlcov/
 # Local development files
 create_superuser.py
 create_test_pages.py
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# User uploaded files (media)
+media/profiles/
+media/uploads/
+
+# Email files (development)
+sent_emails/
