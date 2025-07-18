@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']  # Permitir todos los hosts para desarrollo
 # Application definition
 
 INSTALLED_APPS = [
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'core',
     'pages',
-    'registration',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +120,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Media files (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -127,5 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # URLs de autenticación
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
 LOGOUT_REDIRECT_URL = 'home'
+
+# Email configuration for development
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'

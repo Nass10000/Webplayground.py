@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Mi Perfil{% endblock %}
+{% block content %}
+<main role="main">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto mb-5">
+        <div class="card">
+          <div class="card-header">
+            <h3>Mi Perfil</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                {% if user.profile.avatar %}
+                  <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                  <div class="bg-light rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+                    <i class="fas fa-user fa-3x text-muted"></i>
+                  </div>
+                {% endif %}
+                <h4>{{ user.username }}</h4>
+              </div>
+              <div class="col-md-8">
+                <div class="mb-3">
+                  <strong>Email:</strong> {{ user.email|default:"No especificado" }}
+                </div>
+                <div class="mb-3">
+                  <strong>Biografía:</strong> 
+                  <p>{{ user.profile.bio|default:"No especificada"|linebreaks }}</p>
+                </div>
+                <div class="mb-3">
+                  <strong>Enlace web:</strong> 
+                  {% if user.profile.link %}
+                    <a href="{{ user.profile.link }}" target="_blank" class="text-decoration-none">{{ user.profile.link }}</a>
+                  {% else %}
+                    No especificado
+                  {% endif %}
+                </div>
+                <div class="mb-3">
+                  <strong>Miembro desde:</strong> {{ user.date_joined|date:"d M Y" }}
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-12">
+                <a href="{% url 'profile_edit' %}" class="btn btn-primary">Editar Perfil</a>
+                <a href="{% url 'password_change' %}" class="btn btn-secondary">Cambiar Contraseña</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
