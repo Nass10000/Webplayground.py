@@ -43,6 +43,7 @@ def delete_old_avatar(sender, instance, **kwargs):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+        # print(f"Creando perfil de {instance.username}")  # Comentado para tests
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
