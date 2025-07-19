@@ -6,125 +6,61 @@
 {% block content %}
 <main role="main">
   <div class="container">
-    <div class="row mt-4">
-      <div class="col-md-10 mx-auto mb-5">
-        <!-- Header mejorado -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div>
-            <h2 class="fw-bold text-dark mb-1">
-              <i class="fas fa-comments text-primary me-2"></i>
-              Mis Conversaciones
-            </h2>
-            <p class="text-muted mb-0">Mantente conectado con tu comunidad</p>
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto mb-5">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3><i class="fas fa-comments"></i> Mis Conversaciones</h3>
+            <a href="{% url 'profiles' %}" class="btn btn-primary btn-sm">
+              <i class="fas fa-plus"></i> Nueva Conversación
+            </a>
           </div>
-          <a href="{% url 'profiles' %}" class="btn btn-primary btn-lg shadow-sm">
-            <i class="fas fa-user-plus me-2"></i> Nueva Conversación
-          </a>
-        </div>
-
-        <div class="card border-0 shadow-lg">
-          <div class="card-body p-0">
+          <div class="card-body">
             {% if request.user.threads.all %}
-              <div class="list-group list-group-flush">
+              <div class="list-group">
                 {% for thread in request.user.threads.all %}
-                  <a href="{% url 'thread_detail' thread.pk %}" 
-                     class="list-group-item list-group-item-action border-0 p-4 conversation-item">
-                    <div class="d-flex align-items-center">
-                      <!-- Avatar mejorado -->
-                      <div class="flex-shrink-0 me-3 position-relative">
+                  <a href="{% url 'thread_detail' thread.pk %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h6 class="mb-1">
+                        <i class="fas fa-user-circle"></i>
                         {% for user in thread.users.all %}
                           {% if user != request.user %}
-                            {% if user.profile.avatar %}
-                              <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" 
-                                   class="rounded-circle border-3 border-light shadow" 
-                                   width="50" height="50" style="object-fit: cover;">
-                            {% else %}
-                              <div class="rounded-circle bg-gradient-primary d-flex align-items-center justify-content-center border-3 border-light shadow" 
-                                   style="width: 50px; height: 50px;">
-                                <i class="fas fa-user text-white"></i>
-                              </div>
-                            {% endif %}
-                            <!-- Estado online (decorativo) -->
-                            <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle" 
-                                  style="width: 14px; height: 14px;"></span>
+                            {{ user.username }}
                           {% endif %}
                         {% endfor %}
-                      </div>
-                      
-                      <!-- Contenido de la conversación -->
-                      <div class="flex-grow-1 min-width-0">
-                        <div class="d-flex justify-content-between align-items-start mb-1">
-                          <h6 class="mb-0 fw-bold text-dark">
-                            {% for user in thread.users.all %}
-                              {% if user != request.user %}
-                                {{ user.username }}
-                              {% endif %}
-                            {% endfor %}
-                          </h6>
-                          <small class="text-muted flex-shrink-0 ms-2">
-                            {{ thread.updated|timesince }} atrás
-                          </small>
-                        </div>
-                        
-                        {% if thread.messages.last %}
-                          <p class="mb-1 text-muted text-truncate">
-                            <span class="fw-medium">{{ thread.messages.last.user.username }}:</span>
-                            {{ thread.messages.last.content|truncatewords:12 }}
-                          </p>
-                        {% else %}
-                          <p class="mb-1 text-muted fst-italic">
-                            <i class="fas fa-comment-dots me-1"></i>
-                            Conversación iniciada - Envía el primer mensaje
-                          </p>
-                        {% endif %}
-                        
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div class="d-flex gap-3">
-                            <small class="text-muted">
-                              <i class="fas fa-comments me-1"></i>
-                              {{ thread.messages.count }} mensaje{{ thread.messages.count|pluralize }}
-                            </small>
-                            {% if thread.messages.last %}
-                              <small class="text-muted">
-                                <i class="fas fa-clock me-1"></i>
-                                {{ thread.messages.last.created|date:"d/m/Y H:i" }}
-                              </small>
-                            {% endif %}
-                          </div>
-                          
-                          <!-- Indicador de mensaje no leído (decorativo) -->
-                          {% if thread.messages.count > 0 %}
-                            <span class="badge bg-primary rounded-pill">
-                              <i class="fas fa-arrow-right"></i>
-                            </span>
-                          {% endif %}
-                        </div>
-                      </div>
+                      </h6>
+                      <small class="text-muted">{{ thread.updated|timesince }} atrás</small>
+                    </div>
+                    {% if thread.messages.last %}
+                      <p class="mb-1 text-muted">
+                        <strong>{{ thread.messages.last.user.username }}:</strong>
+                        {{ thread.messages.last.content|truncatewords:10 }}
+                      </p>
+                    {% else %}
+                      <p class="mb-1 text-muted">Sin mensajes aún</p>
+                    {% endif %}
+                    <div class="d-flex justify-content-between">
+                      <small class="text-muted">
+                        <i class="fas fa-comments"></i> {{ thread.messages.count }} mensaje{{ thread.messages.count|pluralize }}
+                      </small>
+                      {% if thread.messages.last %}
+                        <small class="text-muted">{{ thread.messages.last.created|date:"d/m/Y H:i" }}</small>
+                      {% endif %}
                     </div>
                   </a>
                 {% endfor %}
               </div>
             {% else %}
-              <!-- Estado vacío mejorado -->
-              <div class="text-center py-5">
-                <div class="mb-4">
-                  <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                       style="width: 120px; height: 120px;">
-                    <i class="fas fa-comments fa-3x text-muted"></i>
-                  </div>
-                </div>
-                <h4 class="fw-bold text-dark mb-3">¡Aún no tienes conversaciones!</h4>
-                <p class="text-muted mb-4 lead">
-                  Conecta con otros miembros de la comunidad y comienza a intercambiar ideas.
+              <div class="alert alert-info text-center" role="alert">
+                <i class="fas fa-inbox fa-3x mb-3 text-muted"></i>
+                <h4 class="alert-heading">No tienes conversaciones</h4>
+                <p>Aún no has iniciado ninguna conversación.</p>
+                <hr>
+                <p class="mb-0">
+                  <a href="{% url 'profiles' %}" class="btn btn-primary">
+                    <i class="fas fa-users"></i> Ver Perfiles y Empezar a Chatear
+                  </a>
                 </p>
-                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                  <a href="{% url 'profiles' %}" class="btn btn-primary btn-lg px-4">
-                    <i class="fas fa-users me-2"></i> Explorar Perfiles
-                  </a>
-                  <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg px-4">
-                    <i class="fas fa-home me-2"></i> Volver al Inicio
-                  </a>
-                </div>
               </div>
             {% endif %}
           </div>
@@ -133,29 +69,4 @@
     </div>
   </div>
 </main>
-
-<style>
-.conversation-item {
-  transition: all 0.3s ease;
-  border-left: 4px solid transparent !important;
-}
-
-.conversation-item:hover {
-  background-color: #f8f9fa !important;
-  border-left: 4px solid #007bff !important;
-  transform: translateX(2px);
-}
-
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-
-.min-width-0 {
-  min-width: 0;
-}
-
-.shadow-lg {
-  box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
-}
-</style>
 {% endblock %}

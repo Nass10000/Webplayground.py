@@ -2,21 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 # Create your models here.
 
 class ThreadManager(models.Manager):
     def find(self, user1, user2):
-        # Filtrar hilos que contengan exactamente estos dos usuarios
-        threads = self.filter(users=user1).filter(users=user2)
+        # Filtrar por ambos usuarios usando Q objects
+        queryset = self.filter(
+            Q(users=user1) & Q(users=user2)
+        ).distinct()
         
-        # Verificar que el hilo tenga exactamente 2 usuarios
-        for thread in threads:
-            if thread.users.count() == 2:
-                return thread
-        
+        # Si encontramos exactamente 1 hilo, lo devolvemos
+        if queryset.count() == 1:
+            return queryset.first()
+        # Si no encontramos ninguno o hay más de uno, devolvemos None
         return None
     
     def find_or_create(self, user1, user2):
@@ -73,14 +72,3 @@ class Message(models.Model):
         
     def __str__(self):
         return f"Mensaje de {self.user.username} en {self.thread}"
-
-# Señal para actualizar el campo updated del Thread cuando se crea un mensaje
-@receiver(post_save, sender=Message)
-def update_thread_on_message_save(sender, instance, created, **kwargs):
-    """
-    Cuando se crea un nuevo mensaje, actualizar el campo 'updated' del hilo
-    para que aparezca primero en la lista de conversaciones
-    """
-    if created:
-        # Simular un guardado para actualizar el campo updated del hilo
-        instance.thread.save()
