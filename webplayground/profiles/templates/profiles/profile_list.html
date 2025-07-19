@@ -1,0 +1,118 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Perfiles Públicos{% endblock %}
+
+{% block content %}
+<main role="main">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto mb-5">
+        <div class="card">
+          <div class="card-header">
+            <h3>Perfiles Públicos</h3>
+            <p class="mb-0">Descubre a los miembros de nuestra comunidad</p>
+          </div>
+          <div class="card-body">
+            {% if users %}
+              <div class="row">
+                {% for user in users %}
+                  <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                      <div class="card-body text-center">
+                        <div class="mb-3">
+                          {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" alt="Avatar de {{ user.username }}" 
+                                 class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+                          {% else %}
+                            <img src="{% static 'registration/img/no-avatar.svg' %}" alt="Avatar genérico" 
+                                 class="img-fluid rounded-circle" style="width: 80px; height: 80px;">
+                          {% endif %}
+                        </div>
+                        <h5 class="card-title">{{ user.username }}</h5>
+                        {% if user.profile.bio %}
+                          <p class="card-text text-muted">{{ user.profile.bio|truncatewords:15 }}</p>
+                        {% else %}
+                          <p class="card-text text-muted">Sin biografía</p>
+                        {% endif %}
+                        <p class="small text-muted">Miembro desde: {{ user.date_joined|date:"M Y" }}</p>
+                        <div class="d-grid gap-2">
+                          <a href="{% url 'profile_detail' user.username %}" class="btn btn-primary btn-sm">
+                            Ver Perfil
+                          </a>
+                          {% if request.user.is_authenticated and request.user != user %}
+                            <a href="{% url 'start_thread' user.username %}" class="btn btn-success btn-sm">
+                              <i class="fas fa-comment"></i> Mensaje
+                            </a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading">No hay perfiles disponibles</h4>
+                <p>Aún no hay usuarios registrados con perfiles públicos.</p>
+              </div>
+            {% endif %}
+            
+            <!-- Paginación -->
+            {% if is_paginated %}
+              <nav aria-label="Paginación de perfiles">
+                <ul class="pagination justify-content-center">
+                  {% if page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page=1" aria-label="Primera">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                  
+                  {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                      <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                      </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                  
+                  {% if page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Última">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+              
+              <div class="text-center mt-3">
+                <small class="text-muted">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} 
+                  ({{ page_obj.paginator.count }} perfiles en total)
+                </small>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

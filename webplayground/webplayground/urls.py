@@ -26,6 +26,10 @@ urlpatterns = [
     path('sample/', SamplePageView.as_view(), name='sample'),
     # Paths de pages
     path('pages/', include('pages.urls')),
+    # Paths de profiles
+    path('profiles/', include('profiles.urls')),
+    # Paths de messenger
+    path('messenger/', include('messenger.urls')),
     # Paths de autenticación
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('registration.urls')),
