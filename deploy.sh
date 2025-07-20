@@ -1,13 +1,30 @@
-#!/bin/bash
+#!/bin/bashecho "🔧 Ejecutando configuración forzada de base de datos..."
+python manage.py force_setupdespliegue para Web Playground - Render
+echo "🚀 Iniciando despliegue de WebPlayground en Render..."
 
-# Script de despliegue para Web Playground
-echo "🚀 Iniciando proceso de despliegue..."
+# Cambiar al directorio correcto
+cd webplayground
 
-# Crear entorno virtual (si no existe)
-if [ ! -d "venv" ]; then
-    echo "📦 Creando entorno virtual..."
-    python -m venv venv
-fi
+echo "📋 Verificando estructura del proyecto..."
+ls -la
+
+echo "🔍 Verificando migraciones disponibles..."
+python manage.py showmigrations
+
+echo "🗄️  Ejecutando migraciones..."
+python manage.py migrate --verbosity=2
+
+echo "🗄️  Verificando estado después de migraciones..."
+python manage.py showmigrations
+
+echo "📦 Recopilando archivos estáticos..."
+python manage.py collectstatic --noinput --verbosity=2
+
+echo "� Verificando configuración de la aplicación..."
+python manage.py check
+
+echo "🚀 Iniciando servidor Gunicorn..."
+exec gunicorn webplayground.wsgi:application --log-file - --bind 0.0.0.0:$PORT --access-logfile - --error-logfile -
 
 # Activar entorno virtual
 echo "🔧 Activando entorno virtual..."
