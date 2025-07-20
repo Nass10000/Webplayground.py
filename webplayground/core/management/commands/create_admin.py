@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         username = 'admin'
         email = 'admin@webplayground.com'
-        password = 'WebPlayground2025!'
+        password = 'demo123'
         
         if User.objects.filter(username=username).exists():
             self.stdout.write(
