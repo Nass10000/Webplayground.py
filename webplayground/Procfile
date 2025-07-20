@@ -1,1 +1,1 @@
-web: python manage.py setup_db && gunicorn webplayground.wsgi --log-file -
+web: ./start.sh
