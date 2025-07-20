@@ -22,12 +22,12 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(f'Superuser "{username}" created successfully!')
         )
-            self.stdout.write(
-                self.style.SUCCESS(f'Username: {username}')
-            )
-            self.stdout.write(
-                self.style.SUCCESS(f'Password: {password}')
-            )
-            self.stdout.write(
-                self.style.SUCCESS(f'Email: {email}')
-            )
+        self.stdout.write(
+            self.style.SUCCESS(f'Username: {username}')
+        )
+        self.stdout.write(
+            self.style.SUCCESS(f'Password: {password}')
+        )
+        self.stdout.write(
+            self.style.SUCCESS(f'Email: {email}')
+        )
