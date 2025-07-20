@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'webplayground.wsgi.application'
 if 'DATABASE_URL' in os.environ:
     # Producción con PostgreSQL
     import re
-    db_url = config('DATABASE_URL')
+    db_url = os.environ.get('DATABASE_URL')
     db_match = re.match(r'postgresql://([^:]+):([^@]+)@([^:]+):(\d+)/(.+)', db_url)
     if db_match:
         DATABASES = {

@@ -1,11 +1,6 @@
 #!/bin/bash
-echo "🗄️ Ejecutando migraciones..."
-python manage.py migrate --noinput --verbosity=2
 
-echo "👤 Creando superusuario admin..."
-python manage.py create_admin_user
-
-echo "📦 Recopilando archivos estáticos..."pt de deploy limpio para Render
+# Script de deploy limpio para Render
 echo "🚀 Iniciando WebPlayground Deploy..."
 
 # Navegar al directorio del proyecto Django
@@ -18,10 +13,10 @@ ls -la
 echo "🗄️ Ejecutando migraciones..."
 python manage.py migrate --noinput --verbosity=2
 
-echo "� Creando superusuario admin..."
-python manage.py create_admin
+echo "👤 Creando superusuario admin..."
+python manage.py create_admin_user
 
-echo "�📦 Recopilando archivos estáticos..."
+echo "📦 Recopilando archivos estáticos..."
 python manage.py collectstatic --noinput --verbosity=2
 
 echo "🚀 Iniciando Gunicorn..."
