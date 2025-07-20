@@ -13,7 +13,10 @@ ls -la
 echo "🗄️ Ejecutando migraciones..."
 python manage.py migrate --noinput --verbosity=2
 
-echo "📦 Recopilando archivos estáticos..."
+echo "� Creando superusuario admin..."
+python manage.py create_admin
+
+echo "�📦 Recopilando archivos estáticos..."
 python manage.py collectstatic --noinput --verbosity=2
 
 echo "🚀 Iniciando Gunicorn..."
