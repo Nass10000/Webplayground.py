@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config, Csv
-import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,12 +81,39 @@ WSGI_APPLICATION = 'webplayground.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Configuración para desarrollo local (SQLite) y producción (PostgreSQL)
-DATABASE_URL = config('DATABASE_URL', default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
-
-DATABASES = {
-    'default': dj_database_url.parse(DATABASE_URL)
-}
+# Configuración condicional para desarrollo y producción
+if 'DATABASE_URL' in os.environ:
+    # Producción con PostgreSQL
+    import re
+    db_url = config('DATABASE_URL')
+    db_match = re.match(r'postgresql://([^:]+):([^@]+)@([^:]+):(\d+)/(.+)', db_url)
+    if db_match:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': db_match.group(5),
+                'USER': db_match.group(1),
+                'PASSWORD': db_match.group(2),
+                'HOST': db_match.group(3),
+                'PORT': db_match.group(4),
+            }
+        }
+    else:
+        # Fallback a SQLite si no se puede parsear
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+else:
+    # Desarrollo local con SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
