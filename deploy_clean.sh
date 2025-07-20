@@ -1,6 +1,11 @@
 #!/bin/bash
+echo "🗄️ Ejecutando migraciones..."
+python manage.py migrate --noinput --verbosity=2
 
-# Script de deploy limpio para Render
+echo "👤 Creando superusuario admin..."
+python manage.py create_admin_user
+
+echo "📦 Recopilando archivos estáticos..."pt de deploy limpio para Render
 echo "🚀 Iniciando WebPlayground Deploy..."
 
 # Navegar al directorio del proyecto Django
