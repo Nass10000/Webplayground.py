@@ -1,1 +1,1 @@
-web: chmod +x deploy.sh && ./deploy.sh
+web: ./deploy_clean.sh
