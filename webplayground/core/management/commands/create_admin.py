@@ -8,17 +8,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         username = 'admin'
         email = 'admin@webplayground.com'
-        password = 'demo123'
+        password = 'admin123'
         
+        # Eliminar usuario existente si existe
         if User.objects.filter(username=username).exists():
+            User.objects.filter(username=username).delete()
             self.stdout.write(
-                self.style.WARNING(f'Superuser "{username}" already exists')
+                self.style.WARNING(f'Superuser "{username}" existente eliminado')
             )
-        else:
-            User.objects.create_superuser(username, email, password)
-            self.stdout.write(
-                self.style.SUCCESS(f'Superuser "{username}" created successfully!')
-            )
+        
+        # Crear nuevo superuser
+        User.objects.create_superuser(username, email, password)
+        self.stdout.write(
+            self.style.SUCCESS(f'Superuser "{username}" created successfully!')
+        )
             self.stdout.write(
                 self.style.SUCCESS(f'Username: {username}')
             )
