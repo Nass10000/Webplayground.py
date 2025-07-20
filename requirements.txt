@@ -7,3 +7,4 @@ dj-database-url==2.1.0
 django-ckeditor==6.7.0
 django-registration-redux==2.13
 whitenoise==6.6.0
+# Required for PostgreSQL support in production
