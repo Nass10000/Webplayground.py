@@ -1,1 +1,1 @@
-web: cd webplayground && python manage.py migrate --noinput && python manage.py create_admin && python manage.py collectstatic --noinput && gunicorn webplayground.wsgi:application --bind 0.0.0.0:$PORT
+web: ./deploy_clean.sh
