@@ -86,7 +86,8 @@ if 'DATABASE_URL' in os.environ:
     # Producción con PostgreSQL
     import re
     db_url = os.environ.get('DATABASE_URL')
-    db_match = re.match(r'postgresql://([^:]+):([^@]+)@([^:]+):(\d+)/(.+)', db_url)
+    # Regex que maneja tanto URLs con puerto como sin puerto
+    db_match = re.match(r'postgresql://([^:]+):([^@]+)@([^:]+)(?::(\d+))?/(.+)', db_url)
     if db_match:
         DATABASES = {
             'default': {
@@ -95,7 +96,7 @@ if 'DATABASE_URL' in os.environ:
                 'USER': db_match.group(1),
                 'PASSWORD': db_match.group(2),
                 'HOST': db_match.group(3),
-                'PORT': db_match.group(4),
+                'PORT': db_match.group(4) or '5432',  # Puerto por defecto si no se especifica
             }
         }
     else:
