@@ -3,9 +3,6 @@
 # Script de deploy limpio para Render
 echo "🚀 Iniciando WebPlayground Deploy..."
 
-# Navegar al directorio del proyecto Django
-cd webplayground
-
 echo "🔍 Verificando ubicación actual:"
 pwd
 ls -la

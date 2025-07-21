@@ -1,1 +1,1 @@
-web: ../deploy_clean.sh
+web: ./deploy_clean.sh
