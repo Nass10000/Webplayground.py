@@ -1,4 +1,15 @@
 #!/bin/bash
+
+# Script de deploy limpio para Render
+echo "🚀 Iniciando WebPlayground Deploy..."
+
+# Navegar al directorio del proyecto Django
+cd webplayground
+
+echo "🔍 Verificando ubicación actual:"
+pwd
+ls -la
+
 echo "🔍 Verificando configuración de base de datos..."
 python manage.py shell -c "
 from django.conf import settings
@@ -12,20 +23,7 @@ print('PORT:', settings.DATABASES['default'].get('PORT', ''))
 echo "🗄️ Ejecutando migraciones..."
 python manage.py migrate --noinput --verbosity=2
 
-echo "📦 Recopilando archivos estáticos..."cript de deploy limpio para Render
-echo "🚀 Iniciando WebPlayground Deploy..."
-
-# Navegar al directorio del proyecto Django
-cd webplayground
-
-echo "🔍 Verificando ubicación actual:"
-pwd
-ls -la
-
-echo "🗄️ Ejecutando migraciones..."
-python manage.py migrate --noinput --verbosity=2
-
-echo "� Recopilando archivos estáticos..."
+echo "📦 Recopilando archivos estáticos..."
 python manage.py collectstatic --noinput --verbosity=2
 
 echo "🚀 Iniciando Gunicorn..."
